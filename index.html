@@ -3,45 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>リンク生成フォーム</title>
-    <!DOCTYPE html>
-    <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>リンク生成フォーム</title>
-        <style>
-          input[type="text"] {
-             border-radius: 40px;
-              width: 280px;
-              height: 25px;
-              font-size: 15px;
-                }
-                button {
-        font-size: 15px;
-             color: #222;
-          border-radius: 200px;
+    <title>Discord|url偽造</title>
+    <style>
+        input[type="text"] {
+            border-radius: 40px;
+            width: 280px;
+            height: 25px;
+            font-size: 15px;
+        }
+        button {
+            font-size: 15px;
+            color: #222;
+            border-radius: 200px;
             width: 375px;
             height: 42px;
-                }
-            p {
-         font-family: sans-serif;
-            }
-            h2 {
-  font-family: sans-serif;
-            }
-            label {
-  font-family: Arial, sans-serif; /* フォントファミリー */
-  font-size: 18px; /* フォントサイズ */
-  color: #333; /* テキストカラー */
-                  margin-bottom: 5px; /* 下のマージン */
-                  display: block; /* ブロック表示 */
-                            }
-            </style>
+        }
+        label {
+            font-family: Arial, sans-serif;
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .copy-button {
+            font-size: 15px;
+            border-radius: 10px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .copy-button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h2>Discord,URL偽造</h2>
+        <h2>リンク生成フォーム</h2>
         <div class="input-container">
             <label for="displayText">表示URL：</label>
             <input type="text" id="displayText">
@@ -52,6 +53,7 @@
         </div>
         <br>
         <button onclick="generateLink()">リンク生成</button>
+        <button id="copyButton" class="copy-button" onclick="copyToClipboard()">コピー</button>
         <div id="result"></div>
     </div>
 
@@ -60,16 +62,35 @@
             var displayText = document.getElementById('displayText').value;
             var url = document.getElementById('url').value;
             var resultDiv = document.getElementById('result');
+            var copyButton = document.getElementById('copyButton');
 
             if (displayText && url) {
-                var link = document.createElement('a');
-                link.href = url;
-                link.textContent = displayText;
-                resultDiv.innerHTML = '';
-                resultDiv.appendChild(link);
+                var formattedDisplayText = `[${displayText}]`;
+                var formattedURL = `(${url})`;
+                var combinedText = `${formattedDisplayText}${formattedURL}`;
+                resultDiv.innerHTML = `<p>${combinedText}</p>`;
+
+                copyButton.disabled = false;
             } else {
                 resultDiv.innerHTML = '<p>両方のフィールドに入力してください</p>';
+                copyButton.disabled = true;
             }
+        }
+
+        function copyToClipboard() {
+            var resultDiv = document.getElementById('result');
+            var range = document.createRange();
+            range.selectNode(resultDiv);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+
+            try {
+                document.execCommand('copy');
+                alert('コピーしました！');
+            } catch (err) {
+                alert('コピーに失敗しました。');
+            }
+            window.getSelection().removeAllRanges();
         }
     </script>
 </body>
